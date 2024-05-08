@@ -9,17 +9,18 @@ s = (
 )
 
 
-def urldecode(s: str) -> str:
+def urldecode(s: str | bytes) -> str:
     """
-    A dirty way to do urldecode
+    In fact, ascii characters are not encoded in standard urlencode
     """
-    s1 = s.replace("%%", "%")
-    s2 = s1.replace("%", r"\x")
-    s3 = eval(f'"{s2}"')
-    return s3
+    if isinstance(s, bytes):
+        s = s.decode()
+    s2 = s.replace("%", "")
+    return bytearray.fromhex(s2).decode()
 
 
 def main():
+    print(urldecode(b64decode(s)))
     print(urldecode(b64decode(s).decode()))
 
 
