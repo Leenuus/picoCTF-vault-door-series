@@ -4,6 +4,7 @@ import re
 from icecream import ic
 from struct import pack
 
+# extract all relevant number from the source code
 pat = re.compile(r"x\[(\d)\]\s*==\s*(\d+)")
 
 
@@ -13,9 +14,7 @@ def main():
     res = re.findall(pat, content)
     ic(res)
 
-    for _, i in res:
-        ic(pack("<l", int(i)))
-
+    # NOTE: pack this integer to a 32bit(4 byte) big endian bytes string
     r = list(pack(">l", int(i)) for _, i in res)
     ic(r)
     rr = b"".join(r).decode()
